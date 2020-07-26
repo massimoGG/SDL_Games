@@ -84,6 +84,15 @@ void renderGame(Game *game) {
         }
     }
     
+    // Now draw all players, objects, animations
+    for (int i=0; i<game->numparticles; i++) {
+        drawCircle(renderer, game->particles[i].x, game->particles[i].y, game->particles[i].size);
+    }
+    
+    // Objects
+    for (int i=0; i<game->numobjects; i++) {
+        drawCircle(renderer, game->objects[i].x, game->objects[i].y, 2);
+    }
     
     
     SDL_SetRenderDrawColor(renderer, 200,55, 20, SDL_ALPHA_OPAQUE);
