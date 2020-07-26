@@ -73,6 +73,23 @@ int main(int argc, char *argv[]) {
     const unsigned int DELAY_TIME = (int)(1000.0f / FPS);
     long startRefTime, deltaTime;
     
+    // Generate some particles
+#define objs 100
+    game->numobjects = objs;
+    game->objects = malloc(sizeof(Object) * game->numobjects);
+    for (int i=0;i<game->numobjects;i++){
+        game->objects[i].x = rand() % game->width;
+        game->objects[i].y = rand() % game->height;
+    }
+    game->numparticles = objs;
+    game->particles = malloc(sizeof(Particle) * game->numparticles);
+    for (int i=0;i<game->numparticles;i++){
+        game->particles[i].x = rand() % game->width;
+        game->particles[i].y = rand() % game->height;
+        game->particles[i].ay = 1;
+        game->particles[i].size = rand() % 10;
+        game->particles[i].duration = rand() % 10;
+    }
 
     // Main game loop
     while (game->running) {
@@ -92,7 +109,17 @@ int main(int argc, char *argv[]) {
          printf("       \r");
         */
         
-        // TODO: Updatephysics()
+        // TODO: Updatephysics
+        
+        //updateGame(game);
+        for (int i=0;i<game->numparticles;i++) {
+            game->particles[i].dy += game->particles[i].ay;
+            game->particles[i].y += game->particles[i].dy;
+            if (game->particles[i].y > game->height) {
+                game->particles[i].y=0;
+                game->particles[i].dy = 0;
+            }
+        }
         
         renderGame(game);
         
@@ -115,6 +142,8 @@ int main(int argc, char *argv[]) {
     SDL_DestroyRenderer(game->renderer);
     SDL_DestroyWindow(game->window);
     SDL_Quit();
+    free(game->objects);
+    free(game->particles);
     free(game);
     printf("\n");
     return 0;
