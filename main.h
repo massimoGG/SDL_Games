@@ -7,13 +7,21 @@ typedef enum {
     MULTIPLAYER,
 } GAMESTATE;
 
-typdef struct _Object {
-    int x, y, dx, dy, ddx, ddy;
+typedef struct _Object {
+    int x, y, dx, dy;
     
     int (*update)(struct _Object obj); // Point function
-    
-    
 } Object;
+
+typedef struct _Player {
+    
+} Player;
+
+typedef struct _Particle {
+    int x, y, dx, dy, ax, ay;
+    int duration, size;
+
+} Particle;
 
 typedef struct _Game {
     int             running;
@@ -28,6 +36,12 @@ typedef struct _Game {
     SDL_Haptic      *haptic;
     
     // Objects
+    Object          *objects;
+    int             numobjects;
+    
+    // Particles
+    Particle        *particles;
+    int             numparticles;
     
 } Game;
 
